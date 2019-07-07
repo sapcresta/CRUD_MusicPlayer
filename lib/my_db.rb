@@ -131,6 +131,10 @@ def delplaylist(delno)
   stmt.execute
 
 end
+def delsonglist(songdel)
+    stmt=@mysql.prepare("delete from musiclist_table where sid=#{songdel} ")
+    stmt.execute
+end
 
 
 end

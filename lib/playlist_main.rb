@@ -63,8 +63,7 @@ def user_selection
     when 6
         puts "1.Rename"
         puts "2.Delete Playlist?"
-        puts "3.Delete Songs from PlayList?"
-        puts  "4.exit"
+        puts  "3.exit"
         user_input=gets.chomp.to_i
         case (user_input)
             when 1
@@ -78,17 +77,17 @@ def user_selection
                 puts "Enter the playlist number to delete"
                 delno=gets.chomp.to_i
                 $dbObj.delplaylist(delno)
+            
             when 3
-                puts "Enter the song number to delete"
-                songdel=gets.chomp.to_i
-            when 4
                 break
             end
         
         
 
     when 7
-        puts "seven"
+        puts "Enter the song number to delete"
+                songdel=gets.chomp.to_i
+                $dbObj.delsonglist(songdel)
     when 8
         exit
     else
