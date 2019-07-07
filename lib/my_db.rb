@@ -137,6 +137,20 @@ def delsonglist(songdel)
     stmt=@mysql.prepare("delete from musiclist_table where sid=#{songdel} ")
     stmt.execute
 end
+def  delfromplaylist(songid)
+    stmt=@mysql.prepare("delete from join_table where sid=#{songid}")
+    stmt.execute
+
+
+end
+
+def view_songs_in_playlist
+    result = @mysql.query(" select s.SongList 'SongList', p.PlayList 'Playlist' from musiclist_table s,playlist_table p , join_table j where j.sid=s.sid and j.pid=p.pid  order by PlayList asc")
+    result.each do |songs|
+        puts  songs
+       end
+end
+
 
 
 end
