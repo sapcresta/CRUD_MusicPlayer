@@ -25,7 +25,7 @@ class DBtransaction
       end
 
       def create_join_table
-        stmt=@mysql.prepare(" create table join_table( sid int ,pid int ,foreign key (pid) references playlist_table(pid), foreign key (sid) references musiclist_table(sid) ); ")
+        stmt=@mysql.prepare(" create table join_table( sid int ,pid int ,foreign key (pid) references playlist_table(pid) on delete cascade, foreign key (sid) references musiclist_table(sid) on delete cascade); ")
       stmt.execute
       end
 
@@ -54,7 +54,7 @@ class DBtransaction
 
     def view_data
         #mysql = Mysql2::Client.new(:host => "localhost", :username => "sapana", :password => "S@p@n@123", :database => "music")
-        result= @mysql.query("select SongList from musiclist_table")
+        result= @mysql.query("select SongList from musiclist_table order by SongList asc")
         result.each do |songs|
           puts  songs
          end
@@ -83,7 +83,7 @@ end
       $i=0
 
       
-      while $i<5 do
+      while $i<3 do
        
     puts "Select the songs to add"
     view_data
@@ -127,9 +127,13 @@ def update_playlist(no,rename)
 
 end
 def delplaylist(delno)
-  stmt=@mysql.prepare("delete from playlist_table p join join_table j on p.pid=j.pid  where p.pid=#{delno} ")
+  stmt=@mysql.prepare("delete from playlist_table where pid=#{delno} ")
   stmt.execute
 
+end
+def delsonglist(songdel)
+    stmt=@mysql.prepare("delete from musiclist_table where sid=#{songdel} ")
+    stmt.execute
 end
 
 
