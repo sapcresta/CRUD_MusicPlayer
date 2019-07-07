@@ -60,10 +60,7 @@ class DBtransaction
          end
      end
 
-     def update_data
-      result1=@mysql.prepare(" update list1  set fname='sabi', city='pkr' where id=1" )
-      result1.execute
-      end
+     
 
 def musictoplay(mid)
   result= @mysql.query("select SongList from musiclist_table where sid=#{mid}")
