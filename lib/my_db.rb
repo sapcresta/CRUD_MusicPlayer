@@ -19,7 +19,7 @@ class DBtransaction
       end
 
       def create_playlisttable
-        stmt=@mysql.prepare(" create table playlist_table( pid int not null auto_increment primary key, PlayList varchar(255));  ")
+        stmt=@mysql.prepare(" create table playlist_table( pid int not null auto_increment primary key, PlayList varchar(255), playlist_des varchar(255));  ")
        
          stmt.execute
       end
@@ -78,7 +78,9 @@ end
     def insert_into_playlist
       puts "Enter the name of the playlist"
       playlist_name=gets.chomp
-      stmt=@mysql.prepare("insert into playlist_table(PlayList)  values ('#{playlist_name}') ")
+      puts "Enter Description"
+      playlist_des=gets.chomp
+      stmt=@mysql.prepare("insert into playlist_table(PlayList,playlist_des)  values ('#{playlist_name}','#{playlist_des}') ")
       stmt.execute
       $i=0
 
@@ -114,7 +116,7 @@ end
 
 
 def view_playlist
-  result= @mysql.query("select pid,PlayList from playlist_table")
+  result= @mysql.query("select pid,PlayList,playlist_des from playlist_table")
   result.each do |songs|
     puts  songs
    end

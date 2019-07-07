@@ -7,7 +7,6 @@ $dbObj.connect
 #$dbObj.create_table
 #$dbObj.insert_data
 #$dbObj.create_playlisttable
-#$dbObj.insert_into_playlist
 #$dbObj.create_join_table
 
 
