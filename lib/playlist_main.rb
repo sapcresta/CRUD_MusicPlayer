@@ -4,10 +4,10 @@ require "pry"
 
 $dbObj = DBtransaction.new
 $dbObj.connect
-$dbObj.create_table
-$dbObj.insert_data
-$dbObj.create_playlisttable
-$dbObj.create_join_table
+#$dbObj.create_table
+#$dbObj.insert_data
+#$dbObj.create_playlisttable
+#$dbObj.create_join_table
 
 
 
@@ -29,14 +29,15 @@ def user_selection
     menu 
     
     loop do
-        user_choice=gets.chomp.to_i
+        user_choice=$stdin.gets.chomp.to_i
     case (user_choice)
     when 1
        $dbObj.view_data
+       puts "\n\n"
        
     when 2
         puts "choose music number:"
-        music_id=gets.chomp.to_i
+        music_id=$stdin.gets.chomp.to_i
         musicname=$dbObj.musictoplay(music_id)
         musicarray=Array.new
         musicname.each  do |item|
@@ -50,7 +51,10 @@ def user_selection
     when 3
         %x(mpg123 --control --shuffle -Z ../list-of-music/*)
     when 4
+        puts "\n"
        $dbObj.view_playlist
+       puts "\n"
+       puts "PlayList with SongLists"
        $dbObj.view_songs_in_playlist
     when 5
        $dbObj.insert_into_playlist
@@ -60,25 +64,28 @@ def user_selection
         puts "2.Delete Playlist?"
         puts "3.Delete songs from playlist"
         puts  "4.exit"
-        user_input=gets.chomp.to_i
+        user_input=$stdin.gets.chomp.to_i
         case (user_input)
             when 1
+                puts "\n"
                 puts "select the playlist number to rename"
-                renameno=gets.chomp.to_i
+                renameno=$stdin.gets.chomp.to_i
                 
                 puts "Enter the name"
-                rename=gets.chomp
+                rename=$stdin.gets.chomp
                 $dbObj.update_playlist(renameno,rename)
             when 2
+                puts "\n"
                 puts "Enter the playlist number to delete"
-                delno=gets.chomp.to_i
+                delno=$stdin.gets.chomp.to_i
                 $dbObj.delplaylist(delno)
             when 3
+                puts "\n"
                 $dbObj.view_songs_in_playlist
                 puts "Choose playlist to modify"
-                playlistno=gets.chomp.to_i
+                playlistno=$stdin.gets.chomp.to_i
                 puts "Enter songid from the playlist"
-                songid=gets.chomp.to_i
+                songid=$stdin.gets.chomp.to_i
                 $dbObj.delfromplaylist(songid,playlistno)
                 $dbObj.view_songs_in_playlist
 
@@ -90,9 +97,12 @@ def user_selection
         
 
     when 7
+        puts "\n"
+        $dbObj.view_data
         puts "Enter the song number to delete"
-                songdel=gets.chomp.to_i
+                songdel=$stdin.gets.chomp.to_i
                 $dbObj.delsonglist(songdel)
+                puts "\n"
     when 8
         exit
     else
