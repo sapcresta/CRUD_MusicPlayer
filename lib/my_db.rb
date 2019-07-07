@@ -25,7 +25,7 @@ class DBtransaction
       end
 
       def create_join_table
-        stmt=@mysql.prepare(" create table join_table( sid int ,pid int ,foreign key (pid) references playlist_table(pid) on delete cascade, foreign key (sid) references musiclist_table(sid) on delete cascade); ")
+        stmt=@mysql.prepare(" create table join_table( sid int ,pid int ,foreign key (pid) references playlist_table(pid) on update  cascade on delete cascade, foreign key (sid) references musiclist_table(sid) on update cascade on delete cascade); ")
       stmt.execute
       end
 
@@ -54,9 +54,9 @@ class DBtransaction
 
     def view_data
         #mysql = Mysql2::Client.new(:host => "localhost", :username => "sapana", :password => "S@p@n@123", :database => "music")
-        result= @mysql.query("select SongList from musiclist_table order by SongList asc")
-        result.each do |songs|
-          puts  songs
+        result= @mysql.query("select sid,SongList from musiclist_table order by SongList asc")
+        result.each do |k,v|
+          puts  "#{k['sid']} #{k['SongList']} "
          end
      end
 
@@ -137,15 +137,16 @@ def delsonglist(songdel)
     stmt=@mysql.prepare("delete from musiclist_table where sid=#{songdel} ")
     stmt.execute
 end
-def  delfromplaylist(songid)
-    stmt=@mysql.prepare("delete from join_table where sid=#{songid}")
+def  delfromplaylist(songid,playlistno)
+    stmt=@mysql.prepare("delete from join_table where pid=#{playlistno} and sid=#{songid} ")
     stmt.execute
-
+    puts "Song successfully deleted1"
+    
 
 end
 
 def view_songs_in_playlist
-    result = @mysql.query(" select s.SongList 'SongList', p.PlayList 'Playlist' from musiclist_table s,playlist_table p , join_table j where j.sid=s.sid and j.pid=p.pid  order by PlayList asc")
+    result = @mysql.query(" select s.sid, s.SongList 'SongList', p.pid,p.PlayList 'Playlist' from musiclist_table s,playlist_table p , join_table j where j.sid=s.sid and j.pid=p.pid  order by PlayList asc")
     result.each do |songs|
         puts  songs
        end
