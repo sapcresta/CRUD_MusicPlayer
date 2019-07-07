@@ -4,19 +4,13 @@ require "pry"
 
 $dbObj = DBtransaction.new
 $dbObj.connect
-#$dbObj.create_table
-#$dbObj.insert_data
-#$dbObj.create_playlisttable
-#$dbObj.insert_into_playlist
-#$dbObj.create_join_table
+$dbObj.create_table
+$dbObj.insert_data
+$dbObj.create_playlisttable
+$dbObj.create_join_table
 
 
 
-
-#$dbObj.delete_data
-#dbObj.view_data
-
-#dbObj.update_data
 class PlaylistMain
 def menu
     puts "1. View songs"
@@ -57,13 +51,15 @@ def user_selection
         %x(mpg123 --control --shuffle -Z ../list-of-music/*)
     when 4
        $dbObj.view_playlist
+       $dbObj.view_songs_in_playlist
     when 5
        $dbObj.insert_into_playlist
        
     when 6
         puts "1.Rename"
         puts "2.Delete Playlist?"
-        puts  "3.exit"
+        puts "3.Delete songs from playlist"
+        puts  "4.exit"
         user_input=gets.chomp.to_i
         case (user_input)
             when 1
@@ -77,8 +73,17 @@ def user_selection
                 puts "Enter the playlist number to delete"
                 delno=gets.chomp.to_i
                 $dbObj.delplaylist(delno)
-            
             when 3
+                $dbObj.view_songs_in_playlist
+                puts "Choose playlist to modify"
+                playlistno=gets.chomp.to_i
+                puts "Enter songid from the playlist"
+                songid=gets.chomp.to_i
+                $dbObj.delfromplaylist(songid,playlistno)
+                $dbObj.view_songs_in_playlist
+
+            
+            when 4
                 break
             end
         
